@@ -1,20 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { EventBus } from '../../host-app/src/EventBus';
 
 export default function PriceWidget() {
   const [prices, setPrices] = useState({ BTC: 67200, ETH: 3700 });
-  const [EventBusRef, setEventBusRef] = useState(null);
-
-  // Subscribe to updates just for demo (can remove if not needed)
-  useEffect(() => {
-    import('host/eventBus').then((mod) => {
-      const { EventBus } = mod.default;
-      if (!EventBus) {
-        console.error('EventBus is undefined in PriceWidget.');
-        return;
-      }
-      setEventBusRef(() => EventBus); // Store for later use
-    });
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -24,16 +12,14 @@ export default function PriceWidget() {
           ETH: parseFloat(prev.ETH) + (Math.random() * 20 - 10),
         };
 
-        if (EventBusRef) {
-          EventBusRef.publish('priceUpdate', newPrices);
-        }
+        EventBus.publish('priceUpdate', newPrices);
 
         return newPrices;
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [EventBusRef]);
+  }, []);
 
   return (
     <div style={styles.container}>

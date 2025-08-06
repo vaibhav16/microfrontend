@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { EventBus } from '../../host-app/src/EventBus';
 
 export default function PortfolioWidget() {
   const [prices, setPrices] = useState({ BTC: 0, ETH: 0 });
@@ -9,26 +10,13 @@ export default function PortfolioWidget() {
   ];
 
   useEffect(() => {
-    let unsubscribeFn = null;
+    const handlePriceUpdate = (newPrices) => {
+      setPrices(newPrices);
+    };
 
-    import('host/eventBus').then((mod) => {
-      const { EventBus } = mod.default;
-
-      if (!EventBus) {
-        console.error('EventBus is undefined');
-        return;
-      }
-
-      const handlePriceUpdate = (newPrices) => {
-        setPrices(newPrices);
-      };
-
-      EventBus.subscribe('priceUpdate', handlePriceUpdate);
-      unsubscribeFn = () => EventBus.unsubscribe('priceUpdate', handlePriceUpdate);
-    });
-
+    EventBus.subscribe('priceUpdate', handlePriceUpdate);
     return () => {
-      if (unsubscribeFn) unsubscribeFn();
+      EventBus.unsubscribe('priceUpdate', handlePriceUpdate);
     };
   }, []);
 

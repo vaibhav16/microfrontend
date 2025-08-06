@@ -1,9 +1,13 @@
 import React, { Suspense } from 'react';
 
-const PriceWidget = React.lazy(() => import('price/PriceWidget'));
-const PortfolioWidget = React.lazy(() => import('portfolio/PortfolioWidget'));
-const Wallet = React.lazy(() => import('wallet/Wallet'));
-const NewsFeed = React.lazy(() => import('newsfeed/NewsFeed'));
+// const PriceWidget = React.lazy(() => import('price/PriceWidget'));
+// const PortfolioWidget = React.lazy(() => import('portfolio/PortfolioWidget'));
+// const Wallet = React.lazy(() => import('wallet/Wallet'));
+// const NewsFeed = React.lazy(() => import('newsfeed/NewsFeed'));
+import Wallet from '../../wallet-app/src/Wallet';
+import PortfolioWidget from '../../portfolio-widget/src/PortfolioWidget';
+import PriceWidget from '../../price-widget/src/PriceWidget';
+import NewsFeed from '../../newsfeed-app/src/NewsFeed';
 
 function App() {
   return (

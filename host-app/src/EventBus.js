@@ -1,4 +1,3 @@
-// host/src/EventBus.js
 const listeners = {};
 
 export const EventBus = {
