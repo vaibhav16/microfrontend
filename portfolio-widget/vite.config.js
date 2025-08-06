@@ -3,10 +3,8 @@ import react from '@vitejs/plugin-react';
 import federation from '@originjs/vite-plugin-federation';
 import dotenv from 'dotenv';
 
-// Load variables from .env
 dotenv.config();
 
-// Get values from process.env
 const enable = process.env.ENABLE === 'true';
 const hostUrl = process.env.VITE_HOST_URL?.replace(/\/$/, '');
 

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { filterArticles } from './util';
+import { filterArticles, fallbackArticles, API_KEY } from './util';
 
 const NewsFeed = () => {
   const [articles, setArticles] = useState([]);
   const [current, setCurrent] = useState(0);
   const [loading, setLoading] = useState(true);
-
-  const API_KEY = '8284916246904a74844e567b8812de50';
 
   const fetchNews = async () => {
     try {
@@ -15,13 +13,15 @@ const NewsFeed = () => {
       );
       const json = await res.json();
       if (json.status === 'ok') {
-        const tempArticles = filterArticles(json.articles)
-        setArticles(tempArticles);
+        const tempArticles = filterArticles(json.articles);
+        setArticles(tempArticles.length ? tempArticles : fallbackArticles); // ✅ Use fallback if empty
       } else {
         console.error('NewsAPI error:', json);
+        setArticles(fallbackArticles); // ✅ Fallback on API error
       }
     } catch (err) {
       console.error('Failed to fetch live news:', err);
+      setArticles(fallbackArticles); // ✅ Fallback on fetch error
     } finally {
       setLoading(false);
     }
